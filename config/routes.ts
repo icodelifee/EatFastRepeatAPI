@@ -1,5 +1,5 @@
 import { Request, Response, Application } from "express";
-import { MiscController } from "../controllers/miscController";
+import { MiscController } from "../controllers/misc.controller";
 
 export class Routes {
   public miscController: MiscController = new MiscController();
