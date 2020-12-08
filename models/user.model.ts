@@ -1,22 +1,18 @@
-import { BuildOptions, DataTypes, Model, Sequelize } from "sequelize";
+import { DataTypes, Model } from "sequelize";
+import { database } from "../config/database";
 
-export interface UserAttributes {
-  id: number;
-  fullName: string;
-  email: string;
-  height: Int16Array;
-  weight: Float32Array;
-  createdAt?: Date;
-  updatedAt?: Date;
+export class User extends Model {
+  public id!: number;
+  public fullName!: string;
+  public email!: string;
+  public height!: number;
+  public weight!: Float32Array;
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
 }
-export interface UserModel extends Model<UserAttributes>, UserAttributes {}
 
-export type UserStatic = typeof Model & {
-  new (values?: object, options?: BuildOptions): UserModel;
-};
-
-export function UserFactory(sequelize: Sequelize) {
-  return <UserStatic>sequelize.define("educations", {
+User.init(
+  {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -48,5 +44,11 @@ export function UserFactory(sequelize: Sequelize) {
       allowNull: false,
       defaultValue: DataTypes.NOW,
     },
-  });
-}
+  },
+  {
+    tableName: "Users",
+    sequelize: database,
+  }
+);
+
+User.sync({ force: true }).then(() => console.log("User Table Created!"));
