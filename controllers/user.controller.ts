@@ -2,7 +2,6 @@ import chalk from "chalk";
 import { Request, Response } from "express";
 import { DI } from "../constants";
 import { wrap } from "mikro-orm";
-import { User } from "../entities";
 
 export class UserController {
   /*
@@ -41,6 +40,11 @@ export class UserController {
    * @param {Response} res
    */
   public async insertUser(req: Request, res: Response) {
+    if (Object.keys(req.body).length === 0) {
+      res.status(404).send({
+        message: "Please Provide All The Fields",
+      });
+    }
     const user = await DI.userRepo.findOne({
       email: req.body.email,
     });
