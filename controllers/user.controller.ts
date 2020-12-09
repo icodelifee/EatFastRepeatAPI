@@ -1,9 +1,10 @@
 import chalk from "chalk";
 import { Request, Response } from "express";
 import { DI } from "../constants";
+import { wrap } from "mikro-orm";
+import { User } from "../entities";
 
 export class UserController {
-
   /*
     Route endpoint
   */
@@ -58,6 +59,25 @@ export class UserController {
       res.status(404).json({
         message: "User Already Exists",
       });
+    }
+  }
+
+  public async updateUser(req: Request, res: Response) {
+    try {
+      const user = await DI.userRepo.findOne({
+        email: req.params.id,
+      });
+      if (user == null) {
+        res.status(404).send({
+          message: "User Not Found",
+        });
+      }
+      wrap(user).assign(req.body);
+      DI.userRepo.flush();
+      res.status(200).json(user);
+    } catch (e) {
+      console.log(chalk.redBright((e as Error).message));
+      res.status(404).send((e as Error).message);
     }
   }
 }

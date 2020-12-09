@@ -11,5 +11,6 @@ export class Routes {
     app.route("/users").get(this.userController.index);
     app.route("/users/:id").get(this.userController.getById);
     app.route("/users").post(this.userController.insertUser);
+    app.route("/users/:id").put(this.userController.updateUser);
   }
 }
