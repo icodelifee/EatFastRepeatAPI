@@ -1,6 +1,5 @@
 import { BaseEntity } from "./base.entity";
 import { Entity, Property, Unique } from "@mikro-orm/core";
-import { Field, Column } from "@mikro-orm/postgresql"
 
 @Entity()
 export class User extends BaseEntity {
@@ -20,6 +19,9 @@ export class User extends BaseEntity {
 
   @Property()
   unit?: string;
+
+  @Property()
+  targetWeight?: Float32Array;
 
   constructor(name: string, email: string) {
     super();
