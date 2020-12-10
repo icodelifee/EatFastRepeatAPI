@@ -5,7 +5,7 @@ import { Routes } from "./config/routes";
 import { MikroORM } from "@mikro-orm/core";
 import { DI } from "./constants";
 import chalk from "chalk";
-import { User } from "./entities";
+import { Fasting, FastingPlan, User } from "./entities";
 
 class App {
   public app: express.Application;
@@ -22,6 +22,8 @@ class App {
     try {
       DI.orm = await MikroORM.init();
       DI.userRepo = DI.orm.em.getRepository(User);
+      DI.fastingRepo = DI.orm.em.getRepository(Fasting);
+      DI.fastingPlanRepo = DI.orm.em.getRepository(FastingPlan);
     } catch (e) {
       chalk.redBright(`${(e as Error).message}\n`);
     }
