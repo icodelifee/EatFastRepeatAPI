@@ -1,6 +1,8 @@
 import dotenv, { DotenvConfigOutput } from "dotenv";
 import { Options } from "@mikro-orm/core";
 import { BaseEntity, User } from "../entities";
+import { FastingPlan } from "../entities/fastingplan.entity";
+import { Fasting } from "../entities/fasting.entity";
 
 const configResult: DotenvConfigOutput = dotenv.config();
 if (configResult.error) {
@@ -8,7 +10,7 @@ if (configResult.error) {
 }
 
 const mikroConfig: Options = {
-  entities: [BaseEntity, User],
+  entities: [BaseEntity, User, FastingPlan, Fasting],
   dbName: "efr_db",
   type: "postgresql",
   user: process.env.DB_USERNAME,
