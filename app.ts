@@ -6,6 +6,7 @@ import { MikroORM } from "@mikro-orm/core";
 import { DI } from "./constants";
 import chalk from "chalk";
 import { Fasting, FastingPlan, User } from "./entities";
+import helmet from "helmet";
 
 class App {
   public app: express.Application;
@@ -33,6 +34,7 @@ class App {
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: false }));
     this.app.use(morgan("tiny"));
+    this.app.use(helmet());
   }
 }
 export default new App().app;
