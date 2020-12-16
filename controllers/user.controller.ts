@@ -2,6 +2,7 @@ import chalk from "chalk";
 import { Request, Response } from "express";
 import { DI } from "../constants";
 import { wrap } from "mikro-orm";
+import { LoggerType } from "../utils/logger";
 
 export class UserController {
   /*
@@ -54,7 +55,8 @@ export class UserController {
         DI.userRepo.persist(ruser).flush();
         res.status(400).json(ruser);
       } catch (e) {
-        console.log(chalk.redBright((e as Error).message));
+        DI.logger.log(LoggerType.ERROR, (e as Error).message);
+
         res.status(404).send({
           message: (e as Error).message,
         });
@@ -80,7 +82,8 @@ export class UserController {
       DI.userRepo.flush();
       res.status(200).json(user);
     } catch (e) {
-      console.log(chalk.redBright((e as Error).message));
+      DI.logger.log(LoggerType.ERROR, (e as Error).message);
+
       res.status(404).send((e as Error).message);
     }
   }

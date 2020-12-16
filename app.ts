@@ -7,6 +7,7 @@ import { DI } from "./constants";
 import chalk from "chalk";
 import { Fasting, FastingPlan, User } from "./entities";
 import helmet from "helmet";
+import { Logger } from "./utils/logger";
 
 class App {
   public app: express.Application;
@@ -25,6 +26,7 @@ class App {
       DI.userRepo = DI.orm.em.getRepository(User);
       DI.fastingRepo = DI.orm.em.getRepository(Fasting);
       DI.fastingPlanRepo = DI.orm.em.getRepository(FastingPlan);
+      DI.logger = new Logger();
     } catch (e) {
       chalk.redBright(`${(e as Error).message}\n`);
     }
