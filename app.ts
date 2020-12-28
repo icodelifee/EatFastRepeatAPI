@@ -28,7 +28,7 @@ class App {
       DI.fastingPlanRepo = DI.orm.em.getRepository(FastingPlan);
       DI.logger = new Logger();
     } catch (e) {
-      chalk.redBright(`${(e as Error).message}\n`);
+      console.log(chalk.redBright(`${(e as Error).message}\n`));
     }
   }
   // express configs
