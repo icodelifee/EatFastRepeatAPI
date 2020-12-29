@@ -46,7 +46,7 @@ export class UserController {
         message: "Please Provide All The Fields",
       });
     }
-    const user = await DI.userRepo.findOne({
+    const user = await DI.userRepo.findOneOrFail({
       email: req.body.email,
     });
     if (user == null) {
