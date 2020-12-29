@@ -46,9 +46,14 @@ export class UserController {
         message: "Please Provide All The Fields",
       });
     }
-    const user = await DI.userRepo.findOneOrFail({
-      email: req.body.email,
-    });
+    let user;
+    try {
+      user = await DI.userRepo.findOneOrFail({
+        email: req.body.email,
+      });
+    } catch (e) {
+      console.log(chalk.bgCyan("User Not Found!"))
+    }
     if (user == null) {
       try {
         const ruser = DI.userRepo.create(req.body);
