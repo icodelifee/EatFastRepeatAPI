@@ -20,7 +20,7 @@ export class UserController {
    * @param {Response} res
    */
   public async getById(req: Request, res: Response) {
-    const email: string = req.params.email;
+    const email: string = req.params.id;
     const user = await DI.userRepo.findOne({
       email: email,
     });
