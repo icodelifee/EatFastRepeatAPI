@@ -1,7 +1,7 @@
 import chalk from "chalk";
 import { Request, Response } from "express";
 import { DI } from "../constants";
-import { LoggerType } from "../utils/logger";
+import { LoggerType,Logger } from "../utils/logger";
 
 export class FastingPlanController {
   /**
@@ -18,7 +18,7 @@ export class FastingPlanController {
       if (plans == null) res.status(200).json([]);
       res.status(200).json(plans);
     } catch (e) {
-      DI.logger.log(LoggerType.ERROR, (e as Error).message);
+     Logger.log(LoggerType.ERROR, (e as Error).message);
       res.status(404).json({
         message: (e as Error).message,
       });

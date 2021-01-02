@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { DI } from "../constants";
 import { Fasting, FastingPlan, User } from "../entities";
-import { LoggerType } from "../utils/logger";
+import { LoggerType,Logger } from "../utils/logger";
 
 export class FastingController {
   /**
@@ -22,7 +22,7 @@ export class FastingController {
       if (fasts == null) res.status(200).json([]);
       res.status(200).json(fasts);
     } catch (e) {
-      DI.logger.log(LoggerType.ERROR, (e as Error).message);
+      Logger.log(LoggerType.ERROR, (e as Error).message);
       res.status(404).json({
         message: (e as Error).message,
       });
@@ -58,7 +58,7 @@ export class FastingController {
       DI.fastingRepo.persistAndFlush(fast);
       res.status(200).json(fast);
     } catch (e) {
-      DI.logger.log(LoggerType.ERROR, (e as Error).message);
+      Logger.log(LoggerType.ERROR, (e as Error).message);
       res.status(404).json({
         message: (e as Error).message,
       });

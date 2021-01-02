@@ -2,7 +2,8 @@ import chalk from "chalk";
 import { Request, Response } from "express";
 import { DI } from "../constants";
 import { wrap } from "mikro-orm";
-import { LoggerType } from "../utils/logger";
+import { Logger, LoggerType } from "../utils/logger";
+import { User } from "../entities";
 
 export class UserController {
   /*
@@ -20,16 +21,19 @@ export class UserController {
    * @param {Response} res
    */
   public async getById(req: Request, res: Response) {
-    const email: string = req.params.id;
-    const user = await DI.userRepo.findOne({
-      email: email,
-    });
-    if (user == null) {
+    const email: string = req.params.email;
+    console.log(email);
+    let user;
+    try {
+      user = await DI.userRepo.findOneOrFail({
+        email: email,
+      });
+      res.status(200).json(user);
+    } catch (error) {
+      Logger.log(LoggerType.ERROR, error);
       res.status(404).json({
         message: "User Not Found",
       });
-    } else {
-      res.status(200).json(user);
     }
   }
 
@@ -46,21 +50,23 @@ export class UserController {
         message: "Please Provide All The Fields",
       });
     }
+
     let user;
     try {
       user = await DI.userRepo.findOneOrFail({
         email: req.body.email,
       });
     } catch (e) {
-      console.log(chalk.bgCyan("User Not Found!"))
+      console.log(chalk.bgCyan("User Not Found!"));
     }
+
     if (user == null) {
       try {
-        const ruser = DI.userRepo.create(req.body);
+        const ruser = new User(req.body);
         DI.userRepo.persist(ruser).flush();
         res.status(400).json(ruser);
       } catch (e) {
-        DI.logger.log(LoggerType.ERROR, (e as Error).message);
+        Logger.log(LoggerType.ERROR, (e as Error).message);
 
         res.status(404).send({
           message: (e as Error).message,
@@ -87,7 +93,7 @@ export class UserController {
       DI.userRepo.flush();
       res.status(200).json(user);
     } catch (e) {
-      DI.logger.log(LoggerType.ERROR, (e as Error).message);
+      Logger.log(LoggerType.ERROR, (e as Error).message);
 
       res.status(404).send((e as Error).message);
     }

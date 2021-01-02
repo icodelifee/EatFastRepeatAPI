@@ -5,7 +5,7 @@ export enum LoggerType {
   SUCCESS,
 }
 export class Logger {
-  public log(logType: LoggerType, msg: string) {
+  public static log(logType: LoggerType, msg: string) {
     switch (logType) {
       case LoggerType.INFO:
         console.log(chalk.blueBright(msg));

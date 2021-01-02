@@ -3,7 +3,6 @@ import { Entity, Property, Unique } from "@mikro-orm/core";
 
 @Entity()
 export class User extends BaseEntity {
-
   @Property()
   fullName?: string;
 
@@ -23,9 +22,13 @@ export class User extends BaseEntity {
   @Property()
   targetWeight?: Float32Array;
 
-  constructor(name: string, email: string) {
+  constructor(json: any) {
     super();
-    this.fullName = name;
-    this.email = email;
+    this.fullName = json.full_name;
+    this.email = json.email;
+    this.height = json.height;
+    this.weight = json.weight;
+    this.unit = json.unit;
+    this.targetWeight = json.target_weight;
   }
 }
